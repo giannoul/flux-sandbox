@@ -1,0 +1,29 @@
+apiVersion: k3d.io/v1alpha3
+kind: Simple
+servers: 1
+agents: 1
+image: rancher/k3s:v1.21.3-k3s1
+registries: # define how registries should be created or used
+  use:
+    - k3d-flux-registry.localhost:5555
+ports:
+  - port: 8080:80 # same as `--port '8080:80@loadbalancer'`
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true # wait for cluster to be usable before returining; same as `--wait` (default: true)
+    timeout: "60s" # wait timeout before aborting; same as `--timeout 60s`
+  k3s: # options passed on to K3s itself
+    extraArgs: # additional arguments passed to the `k3s server` command
+      - arg: --no-deploy=traefik
+        nodeFilters:
+          - server:*
+      - arg: --kubelet-arg=eviction-minimum-reclaim=imagefs.available=1%,nodefs.available=1% 
+        # https://github.com/k3d-io/k3d/issues/133
+        nodeFilters:
+          - server:*
+    nodeLabels:
+      - label: kubernetes.io/os=linux # same as `--k3s-node-label 'foo=bar@agent:1'` -> this results in a Kubernetes node label
+        nodeFilters:
+          - agent:*
