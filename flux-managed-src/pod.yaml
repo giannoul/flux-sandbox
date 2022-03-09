@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
-  namespace: default
+  namespace: default # This is needed for the flux Kustomization part
 spec:
   containers:
   - name: nginx
