@@ -7,7 +7,7 @@ GID = $(shell id -g $(USER))
 .PHONY: k3d-provision
 k3d-provision: 
 	k3d registry create flux-registry.localhost --port 5555
-	k3d cluster create $(K3D_CLUSTER_NAME) --config $(PWD)/k3d/cluster-config.yaml
+	k3d cluster create $(K3D_CLUSTER_NAME)  --api-port 6550 --config $(PWD)/k3d/cluster-config.yaml
 	kubectl config set-context $(K3D_CLUSTER_NAME) 
 
 .PHONY: k3d-delete-local-registry

@@ -11,7 +11,7 @@ flux-cli: .dockerimage
 	  --network host \
 	  --rm \
 	  -it \
-	  -v ${KUBECONFIG}:/infra/.user/.kube/config:ro \
+	  -v ${KUBECONFIG}:/root/.kube/config:ro \
 	  flux-sandbox:flux-cli bash
 
 .dockerimage: Dockerfile
